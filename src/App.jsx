@@ -48,8 +48,14 @@ function App() {
 
             <Route
               path="/users/:id"
-              element={<UserDetails />}
+              element={
+                <UserDetails
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                />
+              }
             />
+
 
             <Route path="/about" element={<About />} />
 

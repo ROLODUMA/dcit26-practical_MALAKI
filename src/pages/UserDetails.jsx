@@ -3,11 +3,27 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import users from "../data/users";
 import Button from "../components/Button";
 
-function UserDetails() {
+function UserDetails({ favorites, setFavorites }) {
+
   const { id } = useParams();
   const navigate = useNavigate();
 
   const user = users.find((user) => user.id === Number(id));
+
+  const isFavorite = favorites.includes(user?.id);
+
+const toggleFavorite = () => {
+  setFavorites((previousFavorites) => {
+    if (previousFavorites.includes(user.id)) {
+      return previousFavorites.filter(
+        (favoriteId) => favoriteId !== user.id
+      );
+    }
+
+    return [...previousFavorites, user.id];
+  });
+};
+
 
   useEffect(() => {
     if (user) {
@@ -55,6 +71,18 @@ function UserDetails() {
         <p className="mb-6 text-lg text-blue-600 dark:text-blue-400">
           {user.role}
         </p>
+
+        <button
+            onClick={toggleFavorite}
+            className={`mb-6 rounded-lg px-4 py-2 font-semibold transition ${
+                isFavorite
+                    ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white"
+            }`}
+        >
+            {isFavorite ? "★ Remove from Favorites" : "☆ Add to Favorites"}
+        </button>
+
 
         <div className="space-y-4">
           <div>
